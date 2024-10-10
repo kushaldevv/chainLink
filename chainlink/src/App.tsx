@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { Separator } from "./components/ui/separator"
 import Board from "./components/ui/board"
 import { BoardProps } from './types'
 import Keyboard from './components/ui/keyboard'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
-
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
+import { Badge } from "./components/ui/badge"
 
 // chain link by Brad from https://thenounproject.com/browse/icons/term/chain-link/"
 const ChainLink = () => {
@@ -31,7 +29,6 @@ const ChainLink = () => {
 const board1test: BoardProps = {
   userId: '1',
   words: ['BOOK', 'SHELF', 'LIFE', "MUSIC", "CITY", "BIRD"],
-  // status: ['book', 's____', 'l___', 'm________', 'c____', 'B___'],
   status: [['B', 'O', 'O', 'K'], ['S', '_', '_', '_', '_'], ['L', '_', '_', '_'], ['M', '_', '_', '_', '_',], ['C', '_', '_', '_',], ['B', '_', '_', '_']],
   entered: [1, 0, 0, 0, 0, 0],
 }
@@ -39,7 +36,6 @@ const board1test: BoardProps = {
 const board2test: BoardProps = {
   userId: '2',
   words: ['BOOK', 'SHELF', 'LIFE', "MUSIC", "CITY", "BIRD"],
-  // status: ['book', 's____', 'l___', 'm________', 'c____', 'B___'],
   status: [['B', 'O', 'O', 'K'], ['S', '_', '_', '_', '_'], ['L', '_', '_', '_'], ['M', '_', '_', '_', '_',], ['C', '_', '_', '_',], ['B', '_', '_', '_']],
   entered: [1, 0, 0, 0, 0, 0],
 }
@@ -47,29 +43,41 @@ const board2test: BoardProps = {
 function App() {
   const [board1, setBoard1] = useState<BoardProps>(board1test);
   const [board2, setBoard2] = useState<BoardProps>(board2test);
-  const [currentTurn, setCurrentTurn] = useState<number>(1);
+  const [currentTurn, setCurrentTurn] = useState<boolean>(true);
+
+  useEffect(() => {
+    console.log(currentTurn)
+  }, [currentTurn])
 
   return (
     <div className='flex justify-center items-center min-h-svh'>
       <div className='flex flex-col items-center'>
-        <div className='flex items-center'>
-          <p />
-          <h1 className='font-bold text-center items-center'>
+        <div className='flex flex-col items-center w-full'>
+          {/* <div /> */}
+          <h1 className='font-bold text-center'>
             <span>Chain</span>
             <ChainLink />
             <span>Link</span>
           </h1>
+          {/* <h1 className='cursor-pointer hover:opacity-100 opacity-55'>💡</h1> */}
         </div>
         <Separator className='h-[1px] bg-gray-600 w-full mb-2' />
-        <Tabs defaultValue="player1" onValueChange={(value) => setCurrentTurn(value == 'player1' ? 1 : 2)}>
+        <div className='flex justify-between w-full'>
+          <Badge className={`border-blue-500 ${currentTurn ? 'bg-blue-500' : 'bg-transparent text-black'}`}>Player 1</Badge>
+          <Badge className={`border-yellow-500 ${!currentTurn ? 'bg-yellow-500' : 'bg-transparent text-black'}`}>Player 2</Badge>
+        </div>
+        {/* <Tabs defaultValue="player1" value={currentTurn ? 'player1' : 'player2'} 
+        // onValueChange={(value) => setCurrentTurn(value == 'player1' ? true: false)}
+        >
           <TabsList>
             <TabsTrigger value="player1">User1</TabsTrigger>
             <TabsTrigger value="player2">User2</TabsTrigger>
           </TabsList>
           <TabsContent value="player1"><Board board={board1} /></TabsContent>
           <TabsContent value="player2"><Board board={board2} /></TabsContent>
-        </Tabs>
-        <Keyboard board={currentTurn == 1 ? board1 : board2} setBoard={currentTurn == 1 ? setBoard1 : setBoard2} />
+        </Tabs> */}
+        <Board board={currentTurn ? board1 : board2} />
+        <Keyboard board={currentTurn ? board1 : board2} setBoard={currentTurn ? setBoard1 : setBoard2} setCurrentTurn={setCurrentTurn}/>
       </div>
     </div>
   );

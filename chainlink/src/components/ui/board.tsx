@@ -1,9 +1,12 @@
 import React from 'react';
 import { BoardProps } from '../../types';
+import { motion, AnimatePresence } from "framer-motion"
 
 const Row = ({ word, entered }: { word: string[], entered: number }) => {
     const textColor = entered === 1 ? 'text-green-500' : entered === -1 ? 'text-red-500' : 'text-black';
     const borderColor = entered === 1 ? 'border-green-500' : entered === -1 ? 'border-red-500' : 'border-black';
+
+    
 
     return (
         <div className={`flex space-x-2 ${textColor}`}>

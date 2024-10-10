@@ -1,8 +1,9 @@
 import { BoardProps } from '../../types';
 import { SetStateAction } from 'react';
 
-export default function Keyboard({ board, setBoard }: {
+export default function Keyboard({ board, setBoard, setCurrentTurn }: {
     board: BoardProps; setBoard: (value: SetStateAction<BoardProps>) => void;
+    setCurrentTurn: (value: SetStateAction<boolean>) => void;
 }) {
     const keys = [
         ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -31,9 +32,11 @@ export default function Keyboard({ board, setBoard }: {
             } else if (key === '↵') {
                 console.log(currentWordIndex, currentLetterIndex, board.words[currentWordIndex].length);
                 if (currentLetterIndex !==  board.words[currentWordIndex].length) return prevBoard;
+
                 console.log(board.words[currentWordIndex], board.status[currentWordIndex].join(''));
                 if (board.words[currentWordIndex] != board.status[currentWordIndex].join('')) {
                     newBoard.entered[currentWordIndex] = -1;
+                    setCurrentTurn(board.userId === '1' ? false : true);
                 } else {
                     newBoard.entered[currentWordIndex] = 1;
                 }
